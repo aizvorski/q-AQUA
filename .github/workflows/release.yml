@@ -28,6 +28,7 @@ jobs:
       - name: Package artifact
         run: |
           mkdir -p release/qAQUA-${{ github.ref_name }}-linux64
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git archive --format=tar HEAD \
             | tar -x -C release/qAQUA-${{ github.ref_name }}-linux64
           cp src/getpot.x release/qAQUA-${{ github.ref_name }}-linux64/bin/getpot.x
