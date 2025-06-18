@@ -1,11 +1,7 @@
-#Generic makefile for fortran90
+# Intel ifx makefile
 
-FC := ifort 
-# serial
-FFLAGS := -r8 -O
-# parallel  
-#LIBS := -mkl=parallel
-#FFLAGS := -r8 -O3 -qopenmp 
+FC := ifx
+FFLAGS := -r8 -O0
 
 OBJ := \
 constants.o\
@@ -27,6 +23,6 @@ getpot.o
 	$(FC) -c $(FFLAGS) $< 
 
 getpot.x :  $(OBJ) $(OBJPOT)
-	$(FC) -o $@  $^ $(FFLAGS) 
+	$(FC) -static -o $@  $^
 clean :
-	rm *.o *:.mod 
+	rm *.o *.mod
