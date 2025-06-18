@@ -4,7 +4,7 @@ program main
   implicit none
   real,dimension(:),allocatable::x
   real,dimension(:,:),allocatable::gd1,gd2,H
-  character(len=32)::filename
+  character(len=4096)::filename
   integer::i,j,natm,ierr
   character::symb
   real::eng
