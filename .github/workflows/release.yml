@@ -1,0 +1,58 @@
+name: Build & Publish Fortran Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    container:
+      image: intel/oneapi-hpckit:latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build with make
+        shell: bash
+        run: |
+          set -x
+          set
+          ls /opt/intel/oneapi/compiler/ || true
+          ls /opt/intel/oneapi/compiler/2025.1/bin || true
+          ifort -V || true
+          make -v || true
+          cd src
+          make
+          cp getpot.x ../bin
+
+      - name: Package artifact
+        run: |
+          mkdir -p release/qAQUA-${{ github.ref_name }}-linux64
+          git archive --format=tar HEAD \
+            | tar -x -C release/qAQUA-${{ github.ref_name }}-linux64
+          cp bin/getpot.x release/qAQUA-${{ github.ref_name }}-linux64/bin/getpot.x
+          tar czf qAQUA-${{ github.ref_name }}-linux64.tar.gz \
+            -C release qAQUA-${{ github.ref_name }}-linux64
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload tarball to Release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./qAQUA-${{ github.ref_name }}-linux.tar.gz
+          asset_name: qAQUA-${{ github.ref_name }}-linux.tar.gz
+          asset_content_type: application/gzip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
