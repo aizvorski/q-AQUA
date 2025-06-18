@@ -19,20 +19,19 @@ jobs:
         run: |
           set -x
           set
-          ls /opt/intel/oneapi/compiler/ || true
           ls /opt/intel/oneapi/compiler/2025.1/bin || true
-          ifort -V || true
+          ifx -V || true
           make -v || true
           cd src
           make
-          cp getpot.x ../bin
 
       - name: Package artifact
         run: |
           mkdir -p release/qAQUA-${{ github.ref_name }}-linux64
           git archive --format=tar HEAD \
             | tar -x -C release/qAQUA-${{ github.ref_name }}-linux64
-          cp bin/getpot.x release/qAQUA-${{ github.ref_name }}-linux64/bin/getpot.x
+          cp src/getpot.x release/qAQUA-${{ github.ref_name }}-linux64/bin/getpot.x
+          rm release/qAQUA-${{ github.ref_name }}-linux64/*_data.xyz
           tar czf qAQUA-${{ github.ref_name }}-linux64.tar.gz \
             -C release qAQUA-${{ github.ref_name }}-linux64
 
