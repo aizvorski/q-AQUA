@@ -1,0 +1,64 @@
+Details and instructions of water potential:
+
+I. General information
+(1) Folder "coef" contains all fitted coefficients for 2b,3b,4b fits
+(2) Folder "src" contains all source codes for the water potential and dipole moment
+together with examples
+
+II. Steps for compiling the code
+
+(1) Go to folder "src"
+
+(2) Check the Makefile
+In this example, we use IFORT compiler and OPENMP parallelization can be enabled with modifications.
+User can change the compiler as needed, such as GFORTRAN
+
+(3) One example of calling the potential and dipole is given in "getpot.f90"
+there are three components:
+one is using the "pes_shell" module
+one is initializing the PES: call pes_init(natm/3)
+One is calculating the potential energy only: call getpot(x,eng)
+or calculating the potential and analytical gradient: call pot_gd(x,eng,gd1)
+
+(5) Compile the code through "Make getpot.x". Note, it may take some time to compile the 2b,3b, and 4b library files such as bemsa2b.f90. Just be patient :)
+
+(6) Two benchmark tests are given with one water trimer and one hexamer geometry 
+
+For "trimer.xyz", using "./getpot.x trimer.xyz", one will get energy and gradient as:
+Energy: -0.02503134 hartree  -15.70741750 kcal/mol
+Gradient:
+   1     0.00018393    -0.00005228     0.00019626
+   2    -0.00047441     0.00010057     0.00038482
+   3    -0.00007470     0.00002213    -0.00007683
+   4     0.00050444     0.00038716     0.00011350
+   5    -0.00025724     0.00012446    -0.00009281
+   6    -0.00001201    -0.00051519    -0.00027230
+   7    -0.00034540    -0.00045345    -0.00052707
+   8    -0.00031678     0.00026620     0.00040260
+   9     0.00079217     0.00012041    -0.00012818
+
+For "t01_prism.xyz", using "./getpot.x t01_prism.xyz", one will get energy and gradient as:
+ Energy:   -0.07331554 hartree   -46.00623399 kcal/mol
+ Gradient in a.u.
+   1     0.00484048    -0.00226665     0.00074756
+   2    -0.00214426    -0.00122522     0.00364118
+   3    -0.00118297    -0.00056298     0.00526862
+   4    -0.00286030    -0.00122854    -0.00133340
+   5    -0.00192362    -0.00225279     0.00284307
+   6    -0.00181841    -0.00169786    -0.00294382
+   7    -0.00007456    -0.00088599    -0.00432267
+   8     0.00306595     0.00355145    -0.00045939
+   9    -0.00422437     0.00194335    -0.00077380
+  10     0.00155425     0.00343632     0.00037329
+  11    -0.00425150     0.00244677    -0.00010802
+  12     0.00266379     0.00308012    -0.00039121
+  13    -0.00246301     0.00350676    -0.00465070
+  14     0.00414398     0.00176588    -0.00379145
+  15     0.00391320     0.00363723     0.00021019
+  16    -0.00303911    -0.00234440     0.00464375
+  17     0.00258923    -0.00534872     0.00055884
+  18     0.00121122    -0.00555467     0.00048796
+
+
+If any issues, please contact Prof. Joel Bowman at jmbowma@emory.edu
+
