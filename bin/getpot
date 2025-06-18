@@ -1,0 +1,21 @@
+#!/bin/sh
+# getpot.sh — wrapper for getpot.x
+
+# 1) capture and resolve the single argument to absolute (based on the current cwd)
+arg=$1
+if [ -e "$arg" ]; then
+  dir=$(CDPATH= cd -- "$(dirname -- "$arg")" && pwd)
+  base=$(basename -- "$arg")
+  abs_arg="$dir/$base"
+else
+  abs_arg=$arg
+fi
+
+# 2) find where this script lives
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+
+# 3) chdir into the script dir
+cd "$SCRIPT_DIR" || exit 1
+
+# 4) hand off to getpot.x
+exec ./getpot.x "$abs_arg"
