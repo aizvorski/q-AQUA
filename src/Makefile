@@ -1,7 +1,7 @@
 # Intel ifx makefile
 
 FC := ifx
-FFLAGS := -r8 -O0
+FFLAGS := -r8 -O3 -axCORE-AVX2,CORE-AVX512 -mprefer-vector-width=512 -qopt-zmm-usage=high
 
 OBJ := \
 constants.o\
