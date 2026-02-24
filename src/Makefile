@@ -23,6 +23,6 @@ getpot.o
 	$(FC) -c $(FFLAGS) $< 
 
 getpot.x :  $(OBJ) $(OBJPOT)
-	$(FC) -static -qopenmp -qopenmp-link=static -o $@  $^
+	$(FC) -intel-static -qopenmp -qopenmp-link=static -o $@  $^
 clean :
 	rm *.o *.mod
