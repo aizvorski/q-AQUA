@@ -1,7 +1,7 @@
 # Intel ifx makefile
 
 FC := ifx
-FFLAGS := -r8 -O3 -axCORE-AVX2,CORE-AVX512 -mprefer-vector-width=512 -qopt-zmm-usage=high
+FFLAGS := -r8 -O3 -axCORE-AVX2,CORE-AVX512 -mprefer-vector-width=512 -qopt-zmm-usage=high -qopenmp
 
 OBJ := \
 constants.o\
@@ -23,6 +23,6 @@ getpot.o
 	$(FC) -c $(FFLAGS) $< 
 
 getpot.x :  $(OBJ) $(OBJPOT)
-	$(FC) -static -o $@  $^
+	$(FC) -static -qopenmp -qopenmp-link=static -o $@  $^
 clean :
 	rm *.o *.mod

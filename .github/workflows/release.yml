@@ -24,6 +24,7 @@ jobs:
           make -v || true
           cd src
           make
+          ldd src/getpot.x
 
       - name: Package artifact
         run: |
